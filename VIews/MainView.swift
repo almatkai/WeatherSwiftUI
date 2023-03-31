@@ -11,6 +11,7 @@ struct MainView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
     @State var xOffSet: CGFloat = 0
+    @State var xIcons: CGFloat = 0
     @State var yOffSet: CGFloat = 0
     
     @State var changeLang = false
@@ -26,7 +27,7 @@ struct MainView: View {
                             // MARK: - Navigation Bar
                             HStack{
                                 Button {
-                                    withAnimation(.easeOut(duration: 0.6)) {
+                                    withAnimation(.easeOut(duration: 0.4)) {
                                         xOffSet = 0
                                     }
                                 } label: {
@@ -71,20 +72,26 @@ struct MainView: View {
                                 }
                                 
                             }
-                            .padding(.bottom, 8)
                             .padding(.horizontal)
+                            .padding(.bottom, 10)
                             .background(Color("skyBlue"))
                             //
                             // MARK: - ALL CONTENT
-                            HomeView()
+                            ScrollView{
+                                Text("")
+                                    .frame(height: 10)
+                                HomeView()
+                            }.offset(y: -10)
                             //
                             Spacer()
                         }.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                            
+                        // MARK: - SideBar
                         VStack {
                             HStack{
                                 Spacer()
                                 Button {
-                                    withAnimation(.easeIn) {
+                                    withAnimation(.easeIn(duration: 0.4)) {
                                         xOffSet -= geometry.size.width
                                     }
                                 } label: {
@@ -103,12 +110,14 @@ struct MainView: View {
                         .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .offset(x: xOffSet)
+                        .background(Color("white"))
                         // MARK: - Swipe to Close the Sidebar
                         .swipeToClose(xOffSet: $xOffSet){}
                         //
                     }
                     .onAppear {
                         xOffSet -= geometry.size.width
+                        
                     }
                 }
             }else {
@@ -118,9 +127,7 @@ struct MainView: View {
                 }
             }
         }
-//        .onAppear{
-//            weatherViewModel.getWeather(lon: lon, lat: lat)
-//        }
+        .background(Color(hex: "24202a"))
         .onReceive(weatherViewModel.$lang) { _ in
             weatherViewModel.isDataFetched = false
             changeLang = false

@@ -77,7 +77,6 @@ struct Day: Codable {
     let prec_mm, prec_prob, prec_period: Int?
     let cloudness: Double?
     let prec_type, prec_strength: Int?
-//    let icon: Icon
     let condition: String?
     let uv_index: Int?
     let feels_like: Int?

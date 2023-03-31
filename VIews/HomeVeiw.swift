@@ -11,98 +11,68 @@ struct HomeView: View {
     @EnvironmentObject var weatherViewModels: WeatherViewModel
     @Environment(\.screenWidth) var screenWidth
     
-    let hour = Calendar.current.component(.hour, from: Date())
+    @State var hour = Calendar.current.component(.hour, from: Date())
 
+    let dateFormatter = DateFormatter()
+    
+    @State var monthDay = ""
+    
     var body: some View {
-        ScrollView{
-            ZStack{
-                VStack{
-                    VStack{}
-                    .frame(width: screenWidth! * 0.73, height: 0.3333 * screenWidth!)
-                    .background(HalfCircleShape().stroke(Color(hex: "fea301"), lineWidth: 3))
-                    .offset(y: -screenWidth! * 0.045)
-                }.frame(width: screenWidth! * 0.91, height: 0.56 * screenWidth!)
-                    .background{
-                        Color("skyBlue")
-                    }
-                    .cornerRadius(20)
-                    .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.9), radius: 5)
-                VStack {
-                    HStack{
-                        Image("sunrise")
-                            .sidebarImageCustomModifiers(width: 30)
-                        Spacer()
-                        Image("sunset")
-                            .sidebarImageCustomModifiers(width: 30)
-                    }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.805)
-                    HStack{
-                        Text("\(weatherViewModels.forecasts[0].sunrise ?? "Data missing")")
-                            .font(.system(size: 12))
-                        Spacer()
-                        Text("\(weatherViewModels.forecasts[0].sunset ?? "Data missing")")
-                            .font(.system(size: 12))
-                    }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.81)
-                }.offset(y: screenWidth! * 0.2)
-                VStack{
-                    HStack{
-                        if let temperature = weatherViewModels.fact.temp
-                        {
-                            Text("\(temperature)°")
-                                .font(.system(size: 60))
-                        } else {
-                            Text("Data is missing")
-                                .font(.system(size: 60))
-                        }
-                        Image(weatherViewModels.fact.condition ?? "")
-                            .sidebarImageCustomModifiers(width: 60)
-                    }
-                    
-                    if let condition = Condition.fromString(weatherViewModels.fact.condition ?? "") {
-                        Text(condition.rawValue)
-                    } else {
-                        Text("Unknown weather condition")
-                    }
-                    HStack {
-                        Spacer()
-                        Spacer()
-                        Image("wind")
-                            .sidebarImageCustomModifiers(width: 14)
-                        if let windSpeed = weatherViewModels.fact.wind_speed {
-                            Text("\(removeTrailingZero(temp: windSpeed))м/с")
-                                .font(.system(size: 14))
-                                .padding(.trailing, 4)
-                        } else {
-                            Text("No info. about wind speed")
-                                .padding(.trailing, 4)
-                        }
-                        
-                        Image("humidity")
-                            .sidebarImageCustomModifiers(width: 14)
-                        if let humidity = weatherViewModels.fact.humidity {
-                            Text("\(humidity)%")
-                                .font(.system(size: 14))
-                                .padding(.leading, 4)
-                        } else {
-                            Text("No info. about humidity")
-                                .padding(.leading, 4)
-                        }
-                        Spacer()
-                        Spacer()
-                    }
-                }.frame(width: screenWidth! * 0.91)
-                    .padding(.top, screenWidth! * 0.13)
-            }
-            Text("Hello")
-                .frame(width: 500)
-                .background(Color.red)
-            Text("Hello")
-            Text("Hello")
-            Text("Hello")
+        VStack{
+            WeatherCardView()
+            HourlyCapsuleWeatherView()
             
-        }
-            .onAppear{
-                print("DEBUG: \(hour)")
+            ForEach(weatherViewModels.forecasts.indices){ index in
+                let forecast = weatherViewModels.forecasts[index]
+                HStack{
+                    VStack{
+                        Text(formatDate(_: forecast.date))
+                            .onAppear{
+                                let date = Date()
+                                print("\(date)")
+                            }
+                    }
+                    Spacer()
+                    
+                    Image(forecast.parts?.day?.condition ?? "")
+                        .sidebarImageCustomModifiers(width: 30)
+                        .padding(.trailing)
+
+                    VStack{
+                        Text("Max")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 16))
+                        if let tempMax = forecast.parts?.day?.temp_max {
+                            Text(tempMax > 0 ? "+\(tempMax)" : "\(tempMax)")
+                                .font(.system(size: 20))
+                        } else {
+                            Text("N/A")
+                                .font(.system(size: 20))
+                        }
+                    }
+                    VStack{
+                        Text("Min")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 16))
+                        if let tempMin = forecast.parts?.night?.temp_max {
+                            Text(tempMin > 0 ? "+\(tempMin)" : "\(tempMin)")
+                                .font(.system(size: 20))
+                        } else {
+                            Text("N/A")
+                                .font(.system(size: 20))
+                        }
+                    }
+                }
+                .padding()
+                .background(Color(hex: "0a0b0c"))
+                .cornerRadius(15)
+                .padding(.horizontal)
             }
+        }
+        .onAppear{
+            hour += 1
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+        }
     }
 }
 
@@ -119,44 +89,15 @@ struct HalfCircleShape: Shape {
     }
 }
 
-
-
-//VStack{
-//    GeometryReader{ geometry in
-//        VStack{
-//            ZStack{
-//                VStack{
-//
-//                }.frame(width: geometry.size.width * 0.80, height: geometry.size.height * 0.16)
-//                .background(HalfCircleShape().stroke(Color(hex: "fea301"), lineWidth: 3))
-////                        .padding(.bottom, 20)
-////                        .padding(.top, geometry.size.height * 0.02)
-//                VStack{
-//                    Text("\(weatherViewModels.fact.feels_like)")
-//                    Text("\(weatherViewModels.info.tzinfo.name)")
-//                    Text("\(weatherViewModels.info.zoom)")
-//                    Text("\(weatherViewModels.fact.condition)")
-//                    HStack{
-//                        VStack{
-//                            HStack{
-//                                Image("sunrise")
-//                                    .sidebarImageCustomModifiers(width: 34)
-//                                Spacer()
-//                                Image("sunset")
-//                                    .sidebarImageCustomModifiers(width: 34)
-//                            }
-//                            HStack{
-//                                Text("\(weatherViewModels.forecasts[0].sunrise)")
-//                                Spacer()
-//                                Text("\(weatherViewModels.forecasts[0].sunset)")
-//                            }
-//                        }
-//                    }.padding(.horizontal, 20)
-//                        .padding(.top, geometry.size.height > 600 ? 90 : 50)
-//                }
-//            }
-//        }.frame(width: geometry.size.width, height: geometry.size.height > 600 ? 250 : 250)
-//            .background(Color(hex: "124bcf"))
-//            .padding(.top,geometry.size.height > 600 ? 0 : 10)
-//    }.background(Color.brown)
-//}
+func formatDate(_ dateString: String?) -> String {
+    let dateFormatter = DateFormatter()
+    guard let date = dateFormatter.date(from: dateString ?? "") else {
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        guard let date = dateFormatter.date(from: dateString ?? "") else {
+            return "Invalid date"
+        }
+        dateFormatter.dateFormat = "d MMMM"
+        return dateFormatter.string(from: date)
+    }
+    return dateFormatter.string(from: date)
+}

@@ -30,22 +30,18 @@ struct SwipeToCloseModifier: ViewModifier {
                         }
                     }
                     else { // swiping from right to left, disable movement
-                        withAnimation {
-                            xOffSet = 0
-                        }
+                        xOffSet = 0
                     }
                 }
                 .onEnded { gesture in
                     if -gesture.predictedEndTranslation.width > 90 {
-                        withAnimation(.easeInOut(duration: 1)) {
+                        withAnimation(.easeInOut(duration: 0.4)) {
                             xOffSet -= UIScreen.main.bounds.width
                         }
                         action()
                     }
                     else {
-                        withAnimation {
-                            xOffSet = 0
-                        }
+                        xOffSet = 0
                     }
                 })
     }
