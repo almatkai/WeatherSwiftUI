@@ -16,6 +16,13 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         super.init ()
         manager.delegate = self
     }
+    
+    func startUpdatingLocation() {
+        isLoading = true
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+    }
+    
     func requestLocation () {
         isLoading = true
         manager.requestLocation ()

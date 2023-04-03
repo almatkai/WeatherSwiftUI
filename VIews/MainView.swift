@@ -24,67 +24,21 @@ struct MainView: View {
                 GeometryReader { geometry in
                     ZStack {
                         VStack {
-                            // MARK: - Navigation Bar
-                            HStack{
-                                Button {
-                                    withAnimation(.easeOut(duration: 0.4)) {
-                                        xOffSet = 0
-                                    }
-                                } label: {
-                                    Image("menu")
-                                        .sidebarImageCustomModifiers(width: 30)
-                                }
-                                Spacer()
-                                if let localityName = weatherViewModel.geoObject.locality?.name, let countryName = weatherViewModel.geoObject.country?.name {
-                                    Text("\(localityName), \(countryName)")
-                                } else {
-                                    Text("Sorry, data is missing")
-                                }
-                                Spacer()
-                                VStack{
-                                    Text("\(weatherViewModel.lang.description)")
-                                        .font(.system(size: 20))
-                                        .onTapGesture {
-                                            withAnimation{
-                                                changeLang.toggle()
-                                            }
-                                        }
-                                    if changeLang {
-                                        if weatherViewModel.lang.description != "Eng" {
-                                            Text(Lang.Eng.description)
-                                                .onTapGesture {
-                                                    weatherViewModel.lang = Lang.Eng
-                                                }
-                                        }
-                                        if weatherViewModel.lang.description != "Rus" {
-                                            Text(Lang.Rus.description)
-                                                .onTapGesture {
-                                                    weatherViewModel.lang = Lang.Rus
-                                                }
-                                        }
-                                        if weatherViewModel.lang.description != "Kaz" {
-                                            Text(Lang.Kaz.description)
-                                                .onTapGesture {
-                                                    weatherViewModel.lang = Lang.Kaz
-                                                }
-                                        }
-                                    }
-                                }
-                                
-                            }
-                            .padding(.horizontal)
-                            .padding(.bottom, 10)
-                            .background(Color("skyBlue"))
-                            //
+                            // MARK: - Nav Bar
+                            NavigationBar(xOffSet: $xOffSet, changeLang: $changeLang)
                             // MARK: - ALL CONTENT
-                            ScrollView{
+                            ScrollView(showsIndicators: false){
                                 Text("")
                                     .frame(height: 10)
                                 HomeView()
-                            }.offset(y: -10)
+                                    
+                            }
+                                .edgesIgnoringSafeArea(.bottom)
                             //
-                            Spacer()
+//                            Spacer()
                         }.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                            .frame(maxHeight: .infinity)
+                            
                             
                         // MARK: - SideBar
                         VStack {
@@ -107,17 +61,16 @@ struct MainView: View {
                                 .frame(width: 100, height: 100)
                             Spacer()
                         }
-                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .offset(x: xOffSet)
                         .background(Color("white"))
                         // MARK: - Swipe to Close the Sidebar
                         .swipeToClose(xOffSet: $xOffSet){}
                         //
+                        
                     }
                     .onAppear {
                         xOffSet -= geometry.size.width
-                        
                     }
                 }
             }else {

@@ -52,7 +52,7 @@ struct WeatherCardView: View {
                             .font(.system(size: 60))
                     }
                     Image(weatherViewModels.fact.condition ?? "")
-                        .sidebarImageCustomModifiers(width: 60)
+                        .sidebarImageCustomModifiers(width: 80)
                 }
                 
                 if let condition = Condition.fromString(weatherViewModels.fact.condition ?? "") {

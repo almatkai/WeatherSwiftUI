@@ -27,6 +27,7 @@ struct HomeView: View {
                 HStack{
                     VStack{
                         Text(formatDate(_: forecast.date))
+                            .foregroundColor(.white)
                             .onAppear{
                                 let date = Date()
                                 print("\(date)")
@@ -35,32 +36,40 @@ struct HomeView: View {
                     Spacer()
                     
                     Image(forecast.parts?.day?.condition ?? "")
-                        .sidebarImageCustomModifiers(width: 30)
+                        .sidebarImageCustomModifiers(width: 42)
                         .padding(.trailing)
 
                     VStack{
-                        Text("Max")
+                        Text("Maкс")
                             .foregroundColor(.gray)
                             .font(.system(size: 16))
                         if let tempMax = forecast.parts?.day?.temp_max {
                             Text(tempMax > 0 ? "+\(tempMax)" : "\(tempMax)")
                                 .font(.system(size: 20))
+                                .foregroundColor(.white)
                         } else {
                             Text("N/A")
                                 .font(.system(size: 20))
+                                .foregroundColor(.white)
                         }
                     }
                     VStack{
-                        Text("Min")
+                        Text("Мин")
                             .foregroundColor(.gray)
                             .font(.system(size: 16))
-                        if let tempMin = forecast.parts?.night?.temp_max {
-                            Text(tempMin > 0 ? "+\(tempMin)" : "\(tempMin)")
+                        if let parts = forecast.parts {
+                            if getMinValue(parts: parts) == 999 {
+                                Text("N/A")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.white)
+                            }else {
+                                Text("\(getMinValue(parts: parts))")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.white)
+                            }
+                        } else { Text("N/A")
                                 .font(.system(size: 20))
-                        } else {
-                            Text("N/A")
-                                .font(.system(size: 20))
-                        }
+                                .foregroundColor(.white) }
                     }
                 }
                 .padding()
@@ -100,4 +109,16 @@ func formatDate(_ dateString: String?) -> String {
         return dateFormatter.string(from: date)
     }
     return dateFormatter.string(from: date)
+}
+
+func getMinValue(parts: Parts) -> Int {
+    let minArray = [parts.night?.temp_min, parts.day?.temp_min, parts.day_short?.temp_min, parts.evening?.temp_min, parts.night_short?.temp_min]
+    print(minArray)
+    var min = 999
+    for value in minArray {
+        if let val = value {
+            min = min > val ? val : min
+        }
+    }
+    return min
 }
