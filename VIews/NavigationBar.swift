@@ -30,31 +30,39 @@ struct NavigationBar: View {
             Spacer()
             if let localityName = weatherViewModel.geoObject.locality?.name, let countryName = weatherViewModel.geoObject.country?.name {
                 Text("\(localityName), \(countryName)")
-                    .frame(width: lengthOfCityName)
+                    .frame(width: lengthOfCityName, height: 30)
             } else {
                 Text("Sorry, data is missing")
                     .frame(width: lengthOfCityName)
             }
-            TextField("Search the city", text: $cityName)
-                .frame(width: lengthOfSearchBar, height: 30)
-                .background(.green)
             
-            Spacer()
-            Image(systemName: "magnifyingglass")
-                .sidebarImageCustomModifiers(width: 30)
-                .onTapGesture {
-                    if lengthOfSearchBar == 0 {
-                        withAnimation{
-                            lengthOfSearchBar = 200
-                            lengthOfCityName = 0
-                        }
-                    }else {
-                        withAnimation{
-                            lengthOfSearchBar = 0
-                            lengthOfCityName = 200
+            if lengthOfSearchBar == 0 {
+                Spacer()
+            }
+            HStack{
+                Image(systemName: "magnifyingglass")
+                    .sidebarImageCustomModifiers(width: 24)
+                    .onTapGesture {
+                        if lengthOfSearchBar == 0 {
+                            withAnimation{
+                                lengthOfSearchBar = 200
+                                lengthOfCityName = 0
+                            }
+                        }else {
+                            withAnimation{
+                                lengthOfSearchBar = 0
+                                lengthOfCityName = 200
+                            }
                         }
                     }
-                }
+                TextField("Search the city", text: $cityName)
+                    .textFieldStyle(.plain)
+                    .autocorrectionDisabled(true)
+            }.frame(width: lengthOfSearchBar, height: 30)
+                .padding(.horizontal)
+            if lengthOfCityName == 0 {
+                Spacer()
+            }
 //            VStack{
 //                Text("\(weatherViewModel.lang.description)")
 //                    .font(.system(size: 20))
