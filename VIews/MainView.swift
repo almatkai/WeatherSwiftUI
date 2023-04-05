@@ -80,11 +80,14 @@ struct MainView: View {
                 }
             }
         }
-        .background(Color(hex: "24202a"))
+        .background(Color("background"))
+//        .background(Color(hex: "24202a"))
         .onReceive(weatherViewModel.$lang) { _ in
             weatherViewModel.isDataFetched = false
             changeLang = false
             weatherViewModel.getWeather(lon: lon, lat: lat)
+            
+            print("DEBUG: Fetch")
         }
     }
 }

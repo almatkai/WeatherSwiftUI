@@ -24,7 +24,7 @@ struct WeatherCardView: View {
                     Color("skyBlue")
                 }
                 .cornerRadius(20)
-                .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.9), radius: 5)
+                .shadow(color: Color("shadow"), radius: 5)
             VStack {
                 HStack{
                     Image("sunrise")

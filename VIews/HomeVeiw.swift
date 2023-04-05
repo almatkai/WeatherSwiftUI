@@ -27,7 +27,7 @@ struct HomeView: View {
                 HStack{
                     VStack{
                         Text(formatDate(_: forecast.date))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("black"))
                             .onAppear{
                                 let date = Date()
                                 print("\(date)")
@@ -46,11 +46,11 @@ struct HomeView: View {
                         if let tempMax = forecast.parts?.day?.temp_max {
                             Text(tempMax > 0 ? "+\(tempMax)" : "\(tempMax)")
                                 .font(.system(size: 20))
-                                .foregroundColor(.white)
+                                .foregroundColor(Color("black"))
                         } else {
                             Text("N/A")
                                 .font(.system(size: 20))
-                                .foregroundColor(.white)
+                                .foregroundColor(Color("black"))
                         }
                     }
                     VStack{
@@ -61,22 +61,25 @@ struct HomeView: View {
                             if getMinValue(parts: parts) == 999 {
                                 Text("N/A")
                                     .font(.system(size: 20))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Color("black"))
                             }else {
                                 Text("\(getMinValue(parts: parts))")
                                     .font(.system(size: 20))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Color("black"))
                             }
                         } else { Text("N/A")
                                 .font(.system(size: 20))
-                                .foregroundColor(.white) }
+                                .foregroundColor(Color("black")) }
                     }
                 }
                 .padding()
-                .background(Color(hex: "0a0b0c"))
+                .background(Color("cardBackGround"))
                 .cornerRadius(15)
                 .padding(.horizontal)
             }
+            
+            Text("")
+                .frame(height: 40)
         }
         .onAppear{
             hour += 1
@@ -113,7 +116,6 @@ func formatDate(_ dateString: String?) -> String {
 
 func getMinValue(parts: Parts) -> Int {
     let minArray = [parts.night?.temp_min, parts.day?.temp_min, parts.day_short?.temp_min, parts.evening?.temp_min, parts.night_short?.temp_min]
-    print(minArray)
     var min = 999
     for value in minArray {
         if let val = value {

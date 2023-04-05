@@ -24,7 +24,7 @@ struct HourlyCapsuleWeatherView: View {
                             Capsule()
                                 .foregroundColor(Color("skyBlue"))
                                 .frame(width: 80, height: 150)
-                                .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.9), radius: 5)
+                                .shadow(color: Color("shadow"), radius: 5)
                             VStack{
                                 Text("\(index):00")
                                 Image((hourlyFact?.condition ?? ""))
