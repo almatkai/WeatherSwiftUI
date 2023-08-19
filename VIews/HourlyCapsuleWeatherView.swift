@@ -12,31 +12,48 @@ struct HourlyCapsuleWeatherView: View {
     @EnvironmentObject var weatherViewModels: WeatherViewModel
     @State var hour = Calendar.current.component(.hour, from: Date())
     
+    @State var fact = [Fact]()
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
-                if let len = weatherViewModels.forecasts[0].hours?.count {
-                    Text("")
-                        .frame(width: 10, height: 150)
-                    ForEach(hour..<len) { index in
-                        let hourlyFact = weatherViewModels.forecasts[0].hours?[index]
+                Rectangle()
+                    .foregroundColor(Color.clear)
+                    .frame(width: 10, height: 150)
+                if fact.count > 0 {
+                    ForEach(hour..<hour + 25, id: \.self) { index in
+                        let hourlyFact = fact[index]
                         ZStack{
                             Capsule()
                                 .foregroundColor(Color("skyBlue"))
                                 .frame(width: 80, height: 150)
                                 .shadow(color: Color("shadow"), radius: 5)
                             VStack{
-                                Text("\(index):00")
-                                Image((hourlyFact?.condition ?? ""))
+                                Text("\(hourlyFact.hour ?? ""):00")
+                                    .foregroundColor(.white)
+                                Image((hourlyFact.condition ?? ""))
                                     .sidebarImageCustomModifiers(width: 30)
-                                if let temp = hourlyFact?.temp {
+                                if let temp = hourlyFact.temp {
                                     Text("\(temp)°")
+                                        .foregroundColor(.white)
                                 }
-                                else { Text("?")}
+                                else {
+                                    Text("?")
+                                        .foregroundColor(.white)
+                                }
                             }
                         }
                     }
                 }
+            }
+            .onAppear {
+                if let hours = weatherViewModels.forecasts[0].hours {
+                    fact += hours
+                }
+                if let hours = weatherViewModels.forecasts[1].hours {
+                    fact += hours
+                }
+                print("DEBUG COUNT: \(fact.count)")
             }
         }
         .frame(height: 170)

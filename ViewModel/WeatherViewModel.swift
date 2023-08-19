@@ -15,11 +15,10 @@ class WeatherViewModel: ObservableObject {
     @Published var yesterday = Yesterday()
     @Published var info = Info()
     @Published var isDataFetched = false
+    @Published var lang = Lang.Eng
     
-    @Published var lang = Lang.Rus
-    
+    // MARK: - Fetch Movies
     func getWeather(lon: Double, lat: Double){
-        // MARK: - Fetch Movies
         let weatherManger = WeatherManger(lang: lang, lon: lon, lat: lat)
             weatherManger.getWeather{  weather in
                 DispatchQueue.main.async {

@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import GooglePlaces
 
 @main
 struct YandexWeatherApp: App {
+    
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
+    
+    @UIApplicationDelegateAdaptor private var appdelegate: YandexWeatherAppDelegate
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -35,5 +39,16 @@ extension EnvironmentValues {
     var screenHeight: CGFloat? {
         get { self[ScreenHeightKey.self] }
         set {  self[ScreenHeightKey.self] = newValue }
+    }
+}
+
+class YandexWeatherAppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
+    func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+
+    }
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        GMSPlacesClient.provideAPIKey("AIzaSyDhaEAljHgUG411Y7fCoH2Gu2ac_lZrQZ4")
+        return true
     }
 }

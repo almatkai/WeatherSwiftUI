@@ -11,21 +11,11 @@ import CoreLocationUI
 struct ContentView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     @StateObject var locationManager = LocationManager ()
-    
-    @State var xOffSet: CGFloat = 0
-    @State var yOffSet: CGFloat = 0
-    
-    @State var changeLang = false
-    
-    @State var locationShare = false
-    
     var body: some View {
         
-        if let location = locationManager.location {
-            MainView(lon: location.longitude, lat: location.latitude)
-        } else {
-            if locationManager.isLoading{
-                ProgressView()
+        VStack {
+            if locationManager.authorizationStatus == .authorizedWhenInUse {
+                MainView(lon: locationManager.locationManager.location?.coordinate.longitude ?? 0, lat: locationManager.locationManager.location?.coordinate.latitude ?? 0)
             } else {
                 WelcomeView()
                     .environmentObject(locationManager)

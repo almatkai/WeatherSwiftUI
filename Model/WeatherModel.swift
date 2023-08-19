@@ -8,11 +8,11 @@
 import Foundation
 
 struct Weather: Decodable {
-    let now: Int
-    let now_dt: String
-    let yesterday: Yesterday?
-    let geo_object: GeoObject?
+    let now: Int?
+    let now_dt: String?
     let info: Info?
+    let geo_object: GeoObject?
+    let yesterday: Yesterday?
     let fact: Fact?
     let forecasts: [Forecast]?
 }
@@ -57,7 +57,7 @@ struct Forecast: Decodable {
 
 // MARK: - Parts
 struct Parts: Codable {
-    let  evening, night, day_short, morning, day, night_short: Day?
+    let evening, night, day_short, morning, day, night_short: Day?
     init(){
         night = nil
         day_short = nil
@@ -74,9 +74,10 @@ struct Day: Codable {
     let wind_dir: String?
     let pressure_mm, pressure_pa, humidity, soil_temp: Int?
     let soil_moisture: Double?
-    let prec_mm, prec_prob, prec_period: Int?
+//    let prec_mm: Int?
+//    let prec_prob, prec_period: Int?
     let cloudness: Double?
-    let prec_type, prec_strength: Int?
+//    let prec_type, prec_strength: Int?
     let condition: String?
     let uv_index: Int?
     let feels_like: Int?
@@ -99,11 +100,6 @@ struct Day: Codable {
         soil_temp = nil
         soil_moisture = nil
         cloudness = nil
-        prec_mm = nil
-        prec_prob = nil
-        prec_period = nil
-        prec_type = nil
-        prec_strength = nil
         condition = nil
         uv_index = nil
         feels_like = nil
@@ -157,7 +153,7 @@ struct Fact: Codable {
         soil_temp = 0
         uv_index = 0
         wind_gust = 0.0
-        hour = nil
+        hour = ""
         hour_ts = nil
         prec_mm = nil
         prec_period = nil
@@ -169,25 +165,25 @@ struct Fact: Codable {
 }
 
 enum Condition: String {
-    case clear = "Ясно"
-    case partlyCloudy = "Малооблачно"
-    case cloudy = "Облачно с прояснениями"
-    case overcast = "Пасмурно"
-    case drizzle = "Морось"
-    case lightRain = "Возможен небольшой дождь"
-    case rain = "Ожидается дождь"
-    case moderateRain = "Ожидается умеренно сильный дождь"
-    case heavyRain = "Сильный дождь"
-    case continuousHeavyRain = "Ожидается длительный сильный дождь"
-    case showers = "Ожидается ливень"
-    case wetSnow = "Ожидается дождь со снегом"
-    case lightSnow = "Возможен небольшой снег"
-    case snow = "Ожидается снег"
-    case snowShowers = "Ожидаетсяснегопад"
-    case hail = "Возможен град"
-    case thunderstorm = "гроза"
-    case thunderstormWithRain = "Ожидаетсядождь с грозой"
-    case thunderstormWithHail = "Возможен гроза с градом"
+    case clear = "Clear"
+    case partlyCloudy = "Partly Cloudy"
+    case cloudy = "Cloudy with Clearings"
+    case overcast = "Overcast"
+    case drizzle = "Drizzle"
+    case lightRain = "Light Rain Possible"
+    case rain = "Rain Expected"
+    case moderateRain = "Moderate Rain Expected"
+    case heavyRain = "Heavy Rain"
+    case continuousHeavyRain = "Long-lasting Heavy Rain Expected"
+    case showers = "Showers Expected"
+    case wetSnow = "Rain and Snow Expected"
+    case lightSnow = "Light Snow Possible"
+    case snow = "Snow Expected"
+    case snowShowers = "Snow Showers Expected"
+    case hail = "Hail Possible"
+    case thunderstorm = "Thunderstorm"
+    case thunderstormWithRain = "Thunderstorm with Rain Expected"
+    case thunderstormWithHail = "Thunderstorm with Hail Possible"
 
     static func fromString(_ string: String) -> Condition? {
         switch string {
@@ -296,8 +292,6 @@ struct Tzinfo: Codable {
 }
 struct GeoObject: Decodable {
     let locality, province, country: Country?
-//    let province: Country
-//    let country: Country
     
     init() {
         locality = nil

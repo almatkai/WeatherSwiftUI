@@ -10,8 +10,7 @@ import SwiftUI
 struct NavigationBar: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
-    @Binding var xOffSet: CGFloat
-    @Binding var changeLang: Bool
+    @Binding var sidebarShow: Bool
     @State var isSearching = false
     @State var cityName: String = ""
     @State var lengthOfSearchBar: CGFloat = 0
@@ -21,7 +20,7 @@ struct NavigationBar: View {
         HStack{
             Button {
                 withAnimation(.easeOut(duration: 0.4)) {
-                    xOffSet = 0
+                    sidebarShow = true
                 }
             } label: {
                 Image("menu")
@@ -52,6 +51,7 @@ struct NavigationBar: View {
                             withAnimation{
                                 lengthOfSearchBar = 0
                                 lengthOfCityName = 200
+                                keyBoardHide()
                             }
                         }
                     }
@@ -63,36 +63,6 @@ struct NavigationBar: View {
             if lengthOfCityName == 0 {
                 Spacer()
             }
-//            VStack{
-//                Text("\(weatherViewModel.lang.description)")
-//                    .font(.system(size: 20))
-//                    .onTapGesture {
-//                        withAnimation{
-//                            changeLang.toggle()
-//                        }
-//                    }
-//                if changeLang {
-//                    if weatherViewModel.lang.description != "Eng" {
-//                        Text(Lang.Eng.description)
-//                            .onTapGesture {
-//                                weatherViewModel.lang = Lang.Eng
-//                            }
-//                    }
-//                    if weatherViewModel.lang.description != "Rus" {
-//                        Text(Lang.Rus.description)
-//                            .onTapGesture {
-//                                weatherViewModel.lang = Lang.Rus
-//                            }
-//                    }
-//                    if weatherViewModel.lang.description != "Kaz" {
-//                        Text(Lang.Kaz.description)
-//                            .onTapGesture {
-//                                weatherViewModel.lang = Lang.Kaz
-//                            }
-//                    }
-//                }
-//            }
-            
         }
         .padding(.horizontal)
         .padding(.bottom, 10)

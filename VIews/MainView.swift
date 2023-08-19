@@ -9,69 +9,37 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
-    
-    @State var xOffSet: CGFloat = 0
-    @State var xIcons: CGFloat = 0
-    @State var yOffSet: CGFloat = 0
-    
-    @State var changeLang = false
-    
+    @State var sidebarShow = false
     let lon: Double
     let lat: Double
+
     var body: some View {
         VStack{
             if weatherViewModel.isDataFetched{
                 GeometryReader { geometry in
                     ZStack {
+                        ScrollView(showsIndicators: false){
+                            Rectangle().frame(height: 40)
+                                .foregroundColor(.clear)
+                            HomeView()
+                        }
                         VStack {
                             // MARK: - Nav Bar
-                            NavigationBar(xOffSet: $xOffSet, changeLang: $changeLang)
-                            // MARK: - ALL CONTENT
-                            ScrollView(showsIndicators: false){
-                                Text("")
-                                    .frame(height: 10)
-                                HomeView()
-                                    
+                            VStack{
+                                NavigationBar(sidebarShow: $sidebarShow)
+                                Rectangle().frame(width: geometry.size.width, height: 2)
+                                    .offset(y: -8)
+                                    .foregroundColor(Color("borderBlue"))
                             }
+                            Spacer()
                                 .edgesIgnoringSafeArea(.bottom)
-                            //
-//                            Spacer()
-                        }.position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                            .frame(maxHeight: .infinity)
-                            
-                            
-                        // MARK: - SideBar
-                        VStack {
-                            HStack{
-                                Spacer()
-                                Button {
-                                    withAnimation(.easeIn(duration: 0.4)) {
-                                        xOffSet -= geometry.size.width
-                                    }
-                                } label: {
-                                    Image("close")
-                                        .sidebarImageCustomModifiers(width: 30)
-                                }
-                            }.padding()
-                            Spacer()
-                            Image(systemName: "paperplane.fill")
-                                .resizable ()
-                                .aspectRatio(contentMode: .fit)
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                            Spacer()
                         }
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .offset(x: xOffSet)
-                        .background(Color("white"))
-                        // MARK: - Swipe to Close the Sidebar
-                        .swipeToClose(xOffSet: $xOffSet){}
-                        //
+                        .frame(maxHeight: .infinity)
                         
+                        SideBarView(sidebarShow: $sidebarShow, width: geometry.size.width * 0.8)
+                            .offset(x: sidebarShow ? 0 : -geometry.size.width)
                     }
-                    .onAppear {
-                        xOffSet -= geometry.size.width
-                    }
+                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                 }
             }else {
                 GeometryReader{ proxy in
@@ -81,13 +49,9 @@ struct MainView: View {
             }
         }
         .background(Color("background"))
-//        .background(Color(hex: "24202a"))
         .onReceive(weatherViewModel.$lang) { _ in
             weatherViewModel.isDataFetched = false
-            changeLang = false
             weatherViewModel.getWeather(lon: lon, lat: lat)
-            
-            print("DEBUG: Fetch")
         }
     }
 }
