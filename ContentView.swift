@@ -24,20 +24,3 @@ struct ContentView: View {
     }
 }
 
-struct ImageModifiers: ViewModifier {
-    let width: CGFloat
-    func body(content: Content) -> some View {
-        content
-            .scaledToFit()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: width)
-            .foregroundColor(Color("black"))
-    }
-}
-
-extension Image {
-    func sidebarImageCustomModifiers(width: CGFloat) -> some View {
-        self.resizable().modifier(ImageModifiers(width: width))
-    }
-}
-

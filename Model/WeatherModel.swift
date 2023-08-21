@@ -15,9 +15,20 @@ struct Weather: Decodable {
     let yesterday: Yesterday?
     let fact: Fact?
     let forecasts: [Forecast]?
+    
+    init() {
+        self.now = 0
+        self.now_dt = ""
+        self.info = Info()
+        self.geo_object = GeoObject()
+        self.yesterday = Yesterday()
+        self.fact = Fact()
+        self.forecasts = []
+    }
 }
 // MARK: - Forecast
-struct Forecast: Decodable {
+struct Forecast: Decodable, Identifiable {
+    let id = UUID()
     let date: String?
     let date_ts, week: Int?
     let sunrise, sunset, rise_begin, set_end: String?

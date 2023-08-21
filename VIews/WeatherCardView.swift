@@ -24,30 +24,30 @@ struct WeatherCardView: View {
                     Color("skyBlue")
                 }
                 .cornerRadius(20)
-                .shadow(color: Color("shadow"), radius: 5)
+                .shadow(color: Color("shadow"), radius: 5, x: 5, y: -2)
             VStack {
                 HStack{
                     Image("sunrise")
-                        .sidebarImageCustomModifiers(width: 30)
+                        .imageModifier(width: 30)
                         .foregroundColor(.white)
                     Spacer()
                     Image("sunset")
-                        .sidebarImageCustomModifiers(width: 30)
+                        .imageModifier(width: 30)
                         .foregroundColor(.white)
                 }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.805)
                 HStack{
-                    Text("\(weatherViewModels.forecasts[0].sunrise ?? "Data missing")")
+                    Text("\(weatherViewModels.weather.forecasts?[0].sunrise ?? "Data missing")")
                         .font(.system(size: 12))
                         .foregroundColor(.white)
                     Spacer()
-                    Text("\(weatherViewModels.forecasts[0].sunset ?? "Data missing")")
+                    Text("\(weatherViewModels.weather.forecasts?[0].sunset ?? "Data missing")")
                         .font(.system(size: 12))
                         .foregroundColor(.white)
                 }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.81)
             }.offset(y: screenWidth! * 0.2)
             VStack{
                 HStack{
-                    if let temperature = weatherViewModels.fact.temp
+                    if let temperature = weatherViewModels.weather.fact?.temp
                     {
                         Text("\(temperature)°")
                             .font(.system(size: 60))
@@ -57,11 +57,11 @@ struct WeatherCardView: View {
                             .font(.system(size: 60))
                             .foregroundColor(.white)
                     }
-                    Image(weatherViewModels.fact.condition ?? "")
-                        .sidebarImageCustomModifiers(width: 80)
+                    Image(weatherViewModels.weather.fact?.condition ?? "")
+                        .imageModifier(width: 80)
                 }
                 
-                if let condition = Condition.fromString(weatherViewModels.fact.condition ?? "") {
+                if let condition = Condition.fromString(weatherViewModels.weather.fact?.condition ?? "") {
                     Text(condition.rawValue)
                         .foregroundColor(.white)
                         
@@ -73,8 +73,8 @@ struct WeatherCardView: View {
                     Spacer()
                     Spacer()
                     Image("wind")
-                        .sidebarImageCustomModifiers(width: 14)
-                    if let windSpeed = weatherViewModels.fact.wind_speed {
+                        .imageModifier(width: 14)
+                    if let windSpeed = weatherViewModels.weather.fact?.wind_speed {
                         Text("\(removeTrailingZero(temp: windSpeed))м/с")
                             .font(.system(size: 14))
                             .padding(.trailing, 4)
@@ -86,8 +86,8 @@ struct WeatherCardView: View {
                     }
                     
                     Image("humidity")
-                        .sidebarImageCustomModifiers(width: 14)
-                    if let humidity = weatherViewModels.fact.humidity {
+                        .imageModifier(width: 14)
+                    if let humidity = weatherViewModels.weather.fact?.humidity {
                         Text("\(humidity)%")
                             .font(.system(size: 14))
                             .padding(.leading, 4)

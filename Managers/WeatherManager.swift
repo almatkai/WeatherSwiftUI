@@ -35,10 +35,11 @@ struct WeatherManger{
     let lat: Double
 
     func getWeather(completion: @escaping (Weather) -> Void) {
-//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=\(lat)&lon=\(lon)&lang=\(self.lang.rawValue)"
+        let url = "https://api.weather.yandex.ru/v2/forecast?lat=\(lat)&lon=\(lon)&lang=\(self.lang.rawValue)"
         // URL EXAMPLES
-        let url = "https://api.weather.yandex.ru/v2/forecast?lat=49.89220004696588&lon=73.19040375680234&lang=ru_Ru" //Karaganda
-//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=37.33233141&lon=-122.0312186&lang=ru_RU" //Cupertino
+//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=51.509865&lon=-0.118092&lang=ru_Ru" //London
+//        let url = "https://api.(аштвукweather.yandex.ru/v2/forecast?lat=49.89220004696588&lon=73.19040375680234&lang=ru_Ru" //Karaganda
+//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=37.33233141&lon=-122.0312186&lang=ru_Ru" //Cupertino
 //        let url = "https://api.weather.yandex.ru/v2/forecast?lat=51.160522&lon=71.470360&lang=ru_RU" //Astana
         
         AF.request(url, headers: headers).responseJSON { response in
@@ -46,12 +47,13 @@ struct WeatherManger{
             case .success(let value):
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: value, options: [])
-                    if let jsonString = String(data: jsonData, encoding: .utf8) {
-                        print("DEBUG jsonData: \(jsonString)")
-                    } else {
-                        print("DEBUG jsonData could not be converted to a string.")
-                    }
-                    print("DEBUG URL: \(url)")
+                    
+                    // MARK: - To Check Whether the data fetched
+//                    if let jsonString = String(data: jsonData, encoding: .utf8) {
+//                        print("DEBUG jsonData: \(jsonString)")
+//                    } else {
+//                        print("DEBUG jsonData could not be converted to a string.")
+//                    }
                     let decoder = JSONDecoder()
                     let weather = try decoder.decode(Weather.self, from: jsonData)
                     completion(weather)

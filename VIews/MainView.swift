@@ -19,7 +19,7 @@ struct MainView: View {
                 GeometryReader { geometry in
                     ZStack {
                         ScrollView(showsIndicators: false){
-                            Rectangle().frame(height: 40)
+                            Rectangle().frame(height: 50)
                                 .foregroundColor(.clear)
                             HomeView()
                         }

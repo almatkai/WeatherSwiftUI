@@ -24,10 +24,11 @@ struct NavigationBar: View {
                 }
             } label: {
                 Image("menu")
-                    .sidebarImageCustomModifiers(width: 30)
+                    .imageModifier(width: 30)
             }
             Spacer()
-            if let localityName = weatherViewModel.geoObject.locality?.name, let countryName = weatherViewModel.geoObject.country?.name {
+            if let localityName = weatherViewModel.weather.geo_object?.locality?.name,
+                let countryName = weatherViewModel.weather.geo_object?.country?.name {
                 Text("\(localityName), \(countryName)")
                     .frame(width: lengthOfCityName, height: 30)
             } else {
@@ -40,7 +41,7 @@ struct NavigationBar: View {
             }
             HStack{
                 Image(systemName: "magnifyingglass")
-                    .sidebarImageCustomModifiers(width: 24)
+                    .imageModifier(width: 24)
                     .onTapGesture {
                         if lengthOfSearchBar == 0 {
                             withAnimation{

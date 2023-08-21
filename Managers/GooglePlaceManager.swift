@@ -8,12 +8,6 @@
 import SwiftUI
 import GooglePlaces
 
-struct Place: Identifiable {
-    var id = UUID().uuidString
-    let name: String
-    let identifier: String
-}
-
 class GooglePlaceManager: ObservableObject {
     
     static let shared = GooglePlaceManager()
@@ -26,7 +20,7 @@ class GooglePlaceManager: ObservableObject {
     
     public func findPlaces(
         query: String,
-        completion: @escaping (Result<[Place], Error>) -> Void
+        completion: @escaping (Result<[PlaceModel], Error>) -> Void
     ) {
             let filter = GMSAutocompleteFilter()
             filter.type = .city
@@ -40,8 +34,8 @@ class GooglePlaceManager: ObservableObject {
                         return
                     }
                     
-                    let places: [Place] = res.compactMap {
-                        Place(name: $0.attributedFullText.string, identifier: $0.placeID)
+                    let places: [PlaceModel] = res.compactMap {
+                        PlaceModel(name: $0.attributedFullText.string, placeId: $0.placeID)
                     }
                     completion(.success(places))
                 }

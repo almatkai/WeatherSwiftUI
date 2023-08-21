@@ -14,7 +14,7 @@ struct SideBarView: View {
     @Binding var sidebarShow: Bool
     
     @StateObject var googlePlaceManager = GooglePlaceManager()
-    @State var placesFound: [Place] = []
+    @State var placesFound: [PlaceModel] = []
     @State var text = ""
     
     var width: CGFloat
@@ -23,6 +23,7 @@ struct SideBarView: View {
             VStack{
                 VStack {
                     TextField("Search place ...", text: $text)
+                        .autocorrectionDisabled(true)
                         .onChange(of: text, perform: { _ in
                             googlePlaceManager.findPlaces(query: text) { result in
                                 switch result {
@@ -37,13 +38,14 @@ struct SideBarView: View {
                     VStack {
                         ScrollView {
                             ForEach(placesFound) { place in
-                                VStack(alignment: .leading) {
-                                    Text(place.name)
-                                        .font(.body)
-                                    Divider()
-                                }
-                                .onTapGesture {
-                                    googlePlaceManager.fetchPlace(placeID: place.identifier)
+                                Button(action: {
+                                    googlePlaceManager.fetchPlace(placeID: place.placeId)
+                                }){
+                                    VStack(alignment: .leading) {
+                                        Text(place.name)
+                                            .font(.body)
+                                        Divider()
+                                    }
                                 }
                             }
                         }
@@ -87,6 +89,10 @@ struct SideBarView: View {
                     }
                 }
         }
+        
+    }
+    
+    private func getSearchedPlaceWeather() {
         
     }
 }

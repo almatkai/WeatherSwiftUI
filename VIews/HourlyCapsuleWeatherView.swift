@@ -10,9 +10,10 @@ import SwiftUI
 struct HourlyCapsuleWeatherView: View {
     
     @EnvironmentObject var weatherViewModels: WeatherViewModel
-    @State var hour = Calendar.current.component(.hour, from: Date())
-    
+    @State var hour = 0
     @State var fact = [Fact]()
+    
+    @State var timeZone: String
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -23,16 +24,17 @@ struct HourlyCapsuleWeatherView: View {
                 if fact.count > 0 {
                     ForEach(hour..<hour + 25, id: \.self) { index in
                         let hourlyFact = fact[index]
+                        let time = extractTimeFromUnixTimestamp(unixTimestamp: hourlyFact.hour_ts ?? 0, timeZone: timeZone)
                         ZStack{
                             Capsule()
                                 .foregroundColor(Color("skyBlue"))
                                 .frame(width: 80, height: 150)
-                                .shadow(color: Color("shadow"), radius: 5)
+                                .shadow(color: Color("shadow"), radius: 5, x: 5, y: -2)
                             VStack{
-                                Text("\(hourlyFact.hour ?? ""):00")
+                                Text("\(time)")
                                     .foregroundColor(.white)
                                 Image((hourlyFact.condition ?? ""))
-                                    .sidebarImageCustomModifiers(width: 30)
+                                    .imageModifier(height: 40)
                                 if let temp = hourlyFact.temp {
                                     Text("\(temp)°")
                                         .foregroundColor(.white)
@@ -47,13 +49,21 @@ struct HourlyCapsuleWeatherView: View {
                 }
             }
             .onAppear {
-                if let hours = weatherViewModels.forecasts[0].hours {
-                    fact += hours
+                
+                hour = extractHour(from: weatherViewModels.weather.now ?? 0, timeZone: timeZone) ?? 0
+                
+                print(hour)
+                
+                if let forecast = weatherViewModels.weather.forecasts?[0]{
+                    if let hours = forecast.hours {
+                        fact += hours
+                    }
+                    if let forecast = weatherViewModels.weather.forecasts?[1]{
+                        if let hours = forecast.hours {
+                            fact += hours
+                        }
+                    }
                 }
-                if let hours = weatherViewModels.forecasts[1].hours {
-                    fact += hours
-                }
-                print("DEBUG COUNT: \(fact.count)")
             }
         }
         .frame(height: 170)

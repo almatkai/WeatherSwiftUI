@@ -20,7 +20,7 @@ struct HomeView: View {
     var body: some View {
         VStack{
             WeatherCardView()
-            HourlyCapsuleWeatherView()
+            HourlyCapsuleWeatherView(timeZone: weatherViewModels.weather.info?.tzinfo?.name ?? "")
             DailyWeatherListView()
             Text("")
                 .frame(height: 40)
@@ -28,9 +28,6 @@ struct HomeView: View {
         .onAppear{
             hour += 1
             dateFormatter.dateFormat = "yyyy-MM-dd"
-            print("DEBUG FORECAST COUNT: \(weatherViewModels.forecasts.count)")
-            print("DEBUG DAY 15 august: \(weatherViewModels.forecasts[1].date)")
-            print("DEBUG DAY 15 august: \(weatherViewModels.forecasts[1])")
         }
     }
 }

@@ -12,60 +12,56 @@ struct DailyWeatherListView: View {
     @EnvironmentObject var weatherViewModels: WeatherViewModel
 
     var body: some View {
-        ForEach(weatherViewModels.forecasts.indices){ index in
-            let forecast = weatherViewModels.forecasts[index]
-            HStack{
-                VStack{
-                    Text(formatDate(_: forecast.date))
-                        .foregroundColor(Color("black"))
-                        .onAppear{
-                            let date = Date()
-                            print("\(date)")
-                        }
-                }
-                Spacer()
-
-                Image(forecast.parts?.day?.condition ?? "")
-                    .sidebarImageCustomModifiers(width: 42)
-                    .padding(.trailing)
-
-                VStack{
-                    Text("Max")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 16))
-                    if let tempMax = forecast.parts?.day?.temp_max {
-                        Text(tempMax > 0 ? "+\(tempMax)" : "\(tempMax)")
-                            .font(.system(size: 20))
-                            .foregroundColor(Color("black"))
-                    } else {
-                        Text("N/A")
-                            .font(.system(size: 20))
+        if let forecasts = weatherViewModels.weather.forecasts {
+            ForEach(forecasts){ forecast in
+                HStack{
+                    VStack{
+                        Text(formatDate(_: forecast.date))
                             .foregroundColor(Color("black"))
                     }
-                }
-                VStack{
-                    Text("Min")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 16))
-                    if let parts = forecast.parts {
-                        if getMinValue(parts: parts) == 999 {
+                    Spacer()
+
+                    Image(forecast.parts?.day?.condition ?? "")
+                        .imageModifier(width: 42)
+                        .padding(.trailing)
+                    VStack{
+                        Text("Max")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 16))
+                        if let tempMax = forecast.parts?.day?.temp_max {
+                            Text(tempMax > 0 ? "+\(tempMax)" : "\(tempMax)")
+                                .font(.system(size: 20))
+                                .foregroundColor(Color("black"))
+                        } else {
                             Text("N/A")
                                 .font(.system(size: 20))
                                 .foregroundColor(Color("black"))
-                        }else {
-                            Text("\(getMinValue(parts: parts))")
-                                .font(.system(size: 20))
-                                .foregroundColor(Color("black"))
                         }
-                    } else { Text("N/A")
-                            .font(.system(size: 20))
-                            .foregroundColor(Color("black")) }
+                    }
+                    VStack{
+                        Text("Min")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 16))
+                        if let parts = forecast.parts {
+                            if getMinValue(parts: parts) == 999 {
+                                Text("N/A")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(Color("black"))
+                            }else {
+                                Text("\(getMinValue(parts: parts))")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(Color("black"))
+                            }
+                        } else { Text("N/A")
+                                .font(.system(size: 20))
+                                .foregroundColor(Color("black")) }
+                    }
                 }
+                .padding()
+                .background(Color("cardBackGround"))
+                .cornerRadius(15)
+                .padding(.horizontal)
             }
-            .padding()
-            .background(Color("cardBackGround"))
-            .cornerRadius(15)
-            .padding(.horizontal)
         }
     }
 

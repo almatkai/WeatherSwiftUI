@@ -14,7 +14,7 @@ struct YandexWeatherApp: App {
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
     
-    @UIApplicationDelegateAdaptor private var appdelegate: YandexWeatherAppDelegate
+    @UIApplicationDelegateAdaptor private var appDelegate: YandexWeatherAppDelegate
     var body: some Scene {
         WindowGroup {
             ContentView()

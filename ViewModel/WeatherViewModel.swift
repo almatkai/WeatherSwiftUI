@@ -9,26 +9,25 @@ import Foundation
 
 class WeatherViewModel: ObservableObject {
 
-    @Published var forecasts = [Forecast]()
-    @Published var fact = Fact()
-    @Published var geoObject = GeoObject()
-    @Published var yesterday = Yesterday()
-    @Published var info = Info()
+    @Published var lat = 0.0
+    @Published var lon = 0.0
     @Published var isDataFetched = false
-    @Published var lang = Lang.Eng
+    @Published var lang = Lang.Rus
+    
+    @Published var weather: Weather = Weather()
     
     // MARK: - Fetch Movies
     func getWeather(lon: Double, lat: Double){
         let weatherManger = WeatherManger(lang: lang, lon: lon, lat: lat)
-            weatherManger.getWeather{  weather in
-                DispatchQueue.main.async {
-                    self.forecasts = weather.forecasts ?? []
-                    self.fact = weather.fact ?? Fact()
-                    self.yesterday = weather.yesterday ?? Yesterday()
-                    self.geoObject = weather.geo_object ?? GeoObject()
-                    self.info = weather.info ?? Info()
-                    self.isDataFetched = true
-                }
+        
+        self.lat = lat
+        self.lon = lon
+        
+        weatherManger.getWeather{  weather in
+            DispatchQueue.main.async {
+                self.weather = weather
+                self.isDataFetched = true
             }
+        }
     }
 }
