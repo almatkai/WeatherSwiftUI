@@ -1,4 +1,4 @@
-# Weather App 
+# Weather App SwiftUI
 
 <p align="center">
     <img width="200" src="https://github.com/almatkai/WeatherSwiftUI/assets/92521753/27572903-6c94-4086-92af-bcda85fc6cd7">
