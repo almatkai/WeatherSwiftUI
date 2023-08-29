@@ -31,3 +31,5 @@ To run the Yandex Weather App locally, follow these steps:
     <li>iOS 15.0 or later</li>
     <li>Xcode 13.0 or later</li>
 </ul>
+<h2>License</h2>
+MIT license, <a href="https://github.com/almatkai/YandexWeather/blob/main/LICENSE">see the details</a>
