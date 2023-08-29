@@ -1,6 +1,8 @@
 # YandexWeather
-![ScreenShot2](https://github.com/almatkai/YandexWeather/assets/92521753/9ad34504-c88f-4fca-aded-58bc7140b58d)
-![ScreenShot1](https://github.com/almatkai/YandexWeather/assets/92521753/5f3932ee-c5fc-418a-8378-16759ffce66f)
+
+![photo_2023-08-29 19 07 12](https://github.com/almatkai/YandexWeather/assets/92521753/29938859-f728-43b5-9ffb-b7d4a690bf7a)
+
+![photo_2023-08-29 19 07 17](https://github.com/almatkai/YandexWeather/assets/92521753/3617c3e6-fe03-4aba-aea2-d666df648c6d)
 
 <br>
 Built with SwiftUI as its foundation, this app offers a modern and user-friendly interface for users to access weather information seamlessly.
@@ -21,6 +23,8 @@ To run the Yandex Weather App locally, follow these steps:
     <li>Add Privacy - Location When In Use Usage Description(Info.plist).</li>
     <li>Run the project on a simulator or device.</li>
 </ol>
+
+![swwdw](https://github.com/almatkai/YandexWeather/assets/92521753/e519f5bc-d859-4613-ae1b-efb1cdc13a5a)
 
 <h2>Requirements</h2>
 <ul>
