@@ -46,7 +46,7 @@ struct WeatherCardView: View {
                 }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.81)
             }.offset(y: screenWidth! * 0.2)
             VStack{
-                HStack{
+                HStack(alignment: .center){
                     if let temperature = weatherVM.currentWeather.fact?.temp
                     {
                         Text("\(temperature)°")
@@ -54,7 +54,7 @@ struct WeatherCardView: View {
                             .foregroundColor(.white)
                     } else {
                         Text("Data is missing")
-                            .font(.system(size: 60))
+                            .font(.system(size: 30))
                             .foregroundColor(.white)
                     }
                     Image(weatherVM.currentWeather.fact?.condition ?? "")
@@ -80,7 +80,7 @@ struct WeatherCardView: View {
                             .padding(.trailing, 4)
                             .foregroundColor(.white)
                     } else {
-                        Text("No info. about wind speed")
+                        Text("No info about wind speed")
                             .padding(.trailing, 4)
                             .foregroundColor(.white)
                     }
@@ -93,7 +93,7 @@ struct WeatherCardView: View {
                             .padding(.leading, 4)
                             .foregroundColor(.white)
                     } else {
-                        Text("No info. about humidity")
+                        Text("No info about humidity")
                             .padding(.leading, 4)
                             .foregroundColor(.white)
                     }

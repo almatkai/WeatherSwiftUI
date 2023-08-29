@@ -19,7 +19,7 @@ struct HourlyCapsuleWeatherView: View {
                     .foregroundColor(Color.clear)
                     .frame(width: 10, height: 150)
                 if weatherVM.fact.count > 0 {
-                    ForEach(hour..<hour + 10, id: \.self) { index in
+                    ForEach(hour..<hour + 24, id: \.self) { index in
                         let hourlyFact = weatherVM.fact[index]
                         ZStack{
                             Capsule()
