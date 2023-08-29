@@ -1,4 +1,12 @@
-# YandexWeather
+# Weather App 
+
+<p align="center">
+    <img width="200" src="https://github.com/almatkai/WeatherSwiftUI/assets/92521753/27572903-6c94-4086-92af-bcda85fc6cd7">
+    <h6>App Icon made by Bing Create</h6>
+
+</p>
+
+---
 
 ![photo_2023-08-29 19 07 12](https://github.com/almatkai/YandexWeather/assets/92521753/29938859-f728-43b5-9ffb-b7d4a690bf7a)
 
