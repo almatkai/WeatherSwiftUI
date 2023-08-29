@@ -1,6 +1,9 @@
 # YandexWeather
+![ScreenShot2](https://github.com/almatkai/YandexWeather/assets/92521753/9ad34504-c88f-4fca-aded-58bc7140b58d)
+![ScreenShot1](https://github.com/almatkai/YandexWeather/assets/92521753/5f3932ee-c5fc-418a-8378-16759ffce66f)
+
 <br>
-The Yandex Weather App is a powerful and feature-rich weather application developed by a 3rd year Software Engineering student. Built with SwiftUI as its foundation, this app offers a modern and user-friendly interface for users to access weather information seamlessly.
+Built with SwiftUI as its foundation, this app offers a modern and user-friendly interface for users to access weather information seamlessly.
 <h2>Features</h2>
 <ul>
     <li>Weather Forecast: Get accurate and up-to-date weather forecasts powered by the Yandex Weather API. Stay informed about temperature, humidity, wind speed, and more.</li>
