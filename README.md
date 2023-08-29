@@ -23,18 +23,22 @@ Built with SwiftUI as its foundation, this app offers a modern and user-friendly
 
 # Getting Started
 To run the Yandex Weather App locally, follow these steps:
-1. Clone the repository to your local machine.
-2. Open the project in Xcode.
-3. Paste your API key of Yandex Weather(WeatherManager file) and Google Places(YandexWeatherApp file).
-4. Add Privacy - Location When In Use Usage Description(Info.plist).
-5. Run the project on a simulator or device.
+<ol>
+    <li>Clone the repository to your local machine.</li>
+    <li>Open the project in Xcode.</li>
+    <li>Paste your API key of Yandex Weather (WeatherManager file) and Google Places (YandexWeatherApp file).</li>
+    <ul>
+        <li>Create a Yandex Weather API key <a href="https://developer.tech.yandex.ru/services">here</a>.</li>
+        <li>Create a Google Places API key <a href="https://console.cloud.google.com/google/maps-apis/credentials">here</a>.</li>
+    </ul>
+    <li>Add "Privacy - Location When In Use Usage Description" to your Info.plist.</li>
+    <li>Run the project on a simulator or device.</li>
+</ol>
 
 ![swwdw](https://github.com/almatkai/YandexWeather/assets/92521753/e519f5bc-d859-4613-ae1b-efb1cdc13a5a)
 
 # Requirements
-
 + iOS 15.0 or later
-  
 + Xcode 13.0 or later
 
 # License
