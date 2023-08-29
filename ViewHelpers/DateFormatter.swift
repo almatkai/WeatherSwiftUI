@@ -11,7 +11,7 @@ import CoreLocation
 public func extractHour(from unixTimestamp: Int, timeZone: String = TimeZone.current.identifier) -> Int? {
     let date = Date(timeIntervalSince1970: TimeInterval(unixTimestamp))
     var calendar = Calendar.current
-    calendar.timeZone = TimeZone(identifier: timeZone) ?? TimeZone.current
+    calendar.timeZone = TimeZone(identifier: timeZone)!
     
     let hour = calendar.component(.hour, from: date)
     return hour
@@ -32,4 +32,3 @@ func extractTimeFromUnixTimestamp(unixTimestamp: Int, timeZone: String = TimeZon
     let hourMinute = dateFormatter.string(from: date)
     return hourMinute
 }
-

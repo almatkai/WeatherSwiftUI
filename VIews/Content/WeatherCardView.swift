@@ -10,7 +10,7 @@ import SwiftUI
 struct WeatherCardView: View {
     
     @Environment(\.screenWidth) var screenWidth
-    @EnvironmentObject var weatherViewModels: WeatherViewModel
+    @EnvironmentObject var weatherVM: WeatherViewModel
     
     var body: some View {
         ZStack {
@@ -36,18 +36,18 @@ struct WeatherCardView: View {
                         .foregroundColor(.white)
                 }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.805)
                 HStack{
-                    Text("\(weatherViewModels.weather.forecasts?[0].sunrise ?? "Data missing")")
+                    Text("\(weatherVM.currentWeather.forecasts?[0].sunrise ?? "Data missing")")
                         .font(.system(size: 12))
                         .foregroundColor(.white)
                     Spacer()
-                    Text("\(weatherViewModels.weather.forecasts?[0].sunset ?? "Data missing")")
+                    Text("\(weatherVM.currentWeather.forecasts?[0].sunset ?? "Data missing")")
                         .font(.system(size: 12))
                         .foregroundColor(.white)
                 }.frame(width: screenWidth! > 800 ? screenWidth! * 0.765 : screenWidth! * 0.81)
             }.offset(y: screenWidth! * 0.2)
             VStack{
                 HStack{
-                    if let temperature = weatherViewModels.weather.fact?.temp
+                    if let temperature = weatherVM.currentWeather.fact?.temp
                     {
                         Text("\(temperature)°")
                             .font(.system(size: 60))
@@ -57,11 +57,11 @@ struct WeatherCardView: View {
                             .font(.system(size: 60))
                             .foregroundColor(.white)
                     }
-                    Image(weatherViewModels.weather.fact?.condition ?? "")
+                    Image(weatherVM.currentWeather.fact?.condition ?? "")
                         .imageModifier(width: 80)
                 }
                 
-                if let condition = Condition.fromString(weatherViewModels.weather.fact?.condition ?? "") {
+                if let condition = Condition.fromString(weatherVM.currentWeather.fact?.condition ?? "") {
                     Text(condition.rawValue)
                         .foregroundColor(.white)
                         
@@ -74,7 +74,7 @@ struct WeatherCardView: View {
                     Spacer()
                     Image("wind")
                         .imageModifier(width: 14)
-                    if let windSpeed = weatherViewModels.weather.fact?.wind_speed {
+                    if let windSpeed = weatherVM.currentWeather.fact?.wind_speed {
                         Text("\(removeTrailingZero(temp: windSpeed))м/с")
                             .font(.system(size: 14))
                             .padding(.trailing, 4)
@@ -87,7 +87,7 @@ struct WeatherCardView: View {
                     
                     Image("humidity")
                         .imageModifier(width: 14)
-                    if let humidity = weatherViewModels.weather.fact?.humidity {
+                    if let humidity = weatherVM.currentWeather.fact?.humidity {
                         Text("\(humidity)%")
                             .font(.system(size: 14))
                             .padding(.leading, 4)

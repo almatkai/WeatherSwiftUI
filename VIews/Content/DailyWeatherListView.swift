@@ -9,10 +9,10 @@ import SwiftUI
 
 struct DailyWeatherListView: View {
 
-    @EnvironmentObject var weatherViewModels: WeatherViewModel
+    @EnvironmentObject var weatherVM: WeatherViewModel
 
     var body: some View {
-        if let forecasts = weatherViewModels.weather.forecasts {
+        if let forecasts = weatherVM.currentWeather.forecasts {
             ForEach(forecasts){ forecast in
                 HStack{
                     VStack{

@@ -8,26 +8,22 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var weatherViewModels: WeatherViewModel
+    @EnvironmentObject var weatherVM: WeatherViewModel
     @Environment(\.screenWidth) var screenWidth
     
     @State var hour = Calendar.current.component(.hour, from: Date())
-
-    let dateFormatter = DateFormatter()
     
     @State var monthDay = ""
     
     var body: some View {
         VStack{
             WeatherCardView()
-            HourlyCapsuleWeatherView(timeZone: weatherViewModels.weather.info?.tzinfo?.name ?? "")
+            if weatherVM.timeZone != "" {
+                HourlyCapsuleWeatherView()
+            }
             DailyWeatherListView()
             Text("")
                 .frame(height: 40)
-        }
-        .onAppear{
-            hour += 1
-            dateFormatter.dateFormat = "yyyy-MM-dd"
         }
     }
 }

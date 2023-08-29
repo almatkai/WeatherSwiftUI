@@ -8,25 +8,55 @@
 import Foundation
 
 class WeatherViewModel: ObservableObject {
-
-    @Published var lat = 0.0
-    @Published var lon = 0.0
-    @Published var isDataFetched = false
-    @Published var lang = Lang.Rus
     
-    @Published var weather: Weather = Weather()
+    @Published var isDataFetched = false
+    @Published var lang = Lang.Eng
+    @Published var weathers: [Weather] = []
+    @Published var currentWeather = Weather()
+    @Published var timeZone = ""
+    @Published var weatherAndPlaceDict: [Int : Int] = [:]
+    @Published var fact = [Fact]()
     
     // MARK: - Fetch Movies
-    func getWeather(lon: Double, lat: Double){
-        let weatherManger = WeatherManger(lang: lang, lon: lon, lat: lat)
+    func getWeather(lon: Double, lat: Double, index: Int = -1, changeLoco: Bool = false){
+        let weatherManager = WeatherManger(lang: lang, lon: lon, lat: lat)
         
-        self.lat = lat
-        self.lon = lon
-        
-        weatherManger.getWeather{  weather in
+        weatherManager.getWeather{  weather in
             DispatchQueue.main.async {
-                self.weather = weather
+                self.weathers.append(weather)
                 self.isDataFetched = true
+                if index >= 0 {
+                    self.weatherAndPlaceDict[index] = self.weathers.count - 1
+                }
+                self.changeCurrentWeather(index: index, isPlaceCDindex: true)
+                
+                if changeLoco {
+                    self.updateFact()
+                }
+            }
+        }
+    }
+    
+    func changeCurrentWeather(index: Int, isPlaceCDindex: Bool = false) {
+        var indx = index
+        if isPlaceCDindex {
+            indx = self.weatherAndPlaceDict[index] ?? 0
+        }
+        self.currentWeather = self.weathers[indx]
+        self.timeZone = self.currentWeather.info?.tzinfo?.name ?? ""
+        self.updateFact()
+    }
+    
+    func updateFact() {
+        fact.removeAll()
+        if let forecast = self.currentWeather.forecasts?[0]{
+            if let hours = forecast.hours {
+                self.fact += hours
+            }
+            if let forecast = self.currentWeather.forecasts?[1]{
+                if let hours = forecast.hours {
+                    self.fact += hours
+                }
             }
         }
     }

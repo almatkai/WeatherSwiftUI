@@ -10,14 +10,16 @@ import CoreLocationUI
 
 struct ContentView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @StateObject var googlePlaceManager = GooglePlaceManager()
     @StateObject var locationManager = LocationManager ()
+    
     var body: some View {
         
         VStack {
             if locationManager.authorizationStatus == .authorizedWhenInUse {
-                MainView(lon: locationManager.locationManager.location?.coordinate.longitude ?? 0, lat: locationManager.locationManager.location?.coordinate.latitude ?? 0)
+                MainView(googlePlaceManager: googlePlaceManager, lon: locationManager.locationManager.location?.coordinate.longitude ?? 0, lat: locationManager.locationManager.location?.coordinate.latitude ?? 0)
             } else {
-                WelcomeView()
+                WelcomeView(googlePlaceManager: googlePlaceManager)
                     .environmentObject(locationManager)
             }
         }

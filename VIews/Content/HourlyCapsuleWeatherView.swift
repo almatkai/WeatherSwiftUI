@@ -9,35 +9,34 @@ import SwiftUI
 
 struct HourlyCapsuleWeatherView: View {
     
-    @EnvironmentObject var weatherViewModels: WeatherViewModel
+    @EnvironmentObject var weatherVM: WeatherViewModel
     @State var hour = 0
-    @State var fact = [Fact]()
-    
-    @State var timeZone: String
-    
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
                 Rectangle()
                     .foregroundColor(Color.clear)
                     .frame(width: 10, height: 150)
-                if fact.count > 0 {
-                    ForEach(hour..<hour + 25, id: \.self) { index in
-                        let hourlyFact = fact[index]
-                        let time = extractTimeFromUnixTimestamp(unixTimestamp: hourlyFact.hour_ts ?? 0, timeZone: timeZone)
+                if weatherVM.fact.count > 0 {
+                    ForEach(hour..<hour + 10, id: \.self) { index in
+                        let hourlyFact = weatherVM.fact[index]
                         ZStack{
                             Capsule()
                                 .foregroundColor(Color("skyBlue"))
                                 .frame(width: 80, height: 150)
                                 .shadow(color: Color("shadow"), radius: 5, x: 5, y: -2)
                             VStack{
-                                Text("\(time)")
+                                Text("\(extractTimeFromUnixTimestamp(unixTimestamp: hourlyFact.hour_ts ?? 0, timeZone: weatherVM.timeZone))")
                                     .foregroundColor(.white)
                                 Image((hourlyFact.condition ?? ""))
                                     .imageModifier(height: 40)
                                 if let temp = hourlyFact.temp {
                                     Text("\(temp)°")
                                         .foregroundColor(.white)
+                                        .onChange(of: temp) { _ in
+                                            hour = extractHour(from: weatherVM.currentWeather.now ?? 0, timeZone: weatherVM.timeZone) ?? 0
+                                        }
                                 }
                                 else {
                                     Text("?")
@@ -49,21 +48,7 @@ struct HourlyCapsuleWeatherView: View {
                 }
             }
             .onAppear {
-                
-                hour = extractHour(from: weatherViewModels.weather.now ?? 0, timeZone: timeZone) ?? 0
-                
-                print(hour)
-                
-                if let forecast = weatherViewModels.weather.forecasts?[0]{
-                    if let hours = forecast.hours {
-                        fact += hours
-                    }
-                    if let forecast = weatherViewModels.weather.forecasts?[1]{
-                        if let hours = forecast.hours {
-                            fact += hours
-                        }
-                    }
-                }
+                hour = extractHour(from: weatherVM.currentWeather.now ?? 0, timeZone: weatherVM.timeZone) ?? 0
             }
         }
         .frame(height: 170)

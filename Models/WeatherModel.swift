@@ -8,6 +8,7 @@
 import Foundation
 
 struct Weather: Decodable {
+    let id = UUID().uuidString
     let now: Int?
     let now_dt: String?
     let info: Info?
@@ -200,7 +201,7 @@ enum Condition: String {
         switch string {
         case "clear":
             return .clear
-        case "partlyCloudy":
+        case "partly-cloudy":
             return .partlyCloudy
         case "cloudy":
             return .cloudy
@@ -208,33 +209,33 @@ enum Condition: String {
             return .overcast
         case "drizzle":
             return .drizzle
-        case "lightRain":
+        case "light-rain":
             return .lightRain
         case "rain":
             return .rain
-        case "moderateRain":
+        case "moderate-rain":
             return .moderateRain
-        case "heavyRain":
+        case "heavy-rain":
             return .heavyRain
-        case "continuousHeavyRain":
+        case "continuous-heavyRain":
             return .continuousHeavyRain
         case "showers":
             return .showers
         case "wetSnow":
             return .wetSnow
-        case "lightSnow":
+        case "light-snow":
             return .lightSnow
         case "snow":
             return .snow
-        case "snowShowers":
+        case "snow-showers":
             return .snowShowers
         case "hail":
             return .hail
         case "thunderstorm":
             return .thunderstorm
-        case "thunderstormWithRain":
+        case "thunderstorm-with-rain":
             return .thunderstormWithRain
-        case "thunderstormWithHail":
+        case "thunderstorm-with-hail":
             return .thunderstormWithHail
         default:
             return nil

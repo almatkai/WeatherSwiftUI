@@ -11,6 +11,10 @@ import CoreLocationUI
 struct WelcomeView: View {
     @EnvironmentObject var locationManager: LocationManager
     
+    @ObservedObject var googlePlaceManager: GooglePlaceManager
+    
+    @State var searchShow = false
+    
     var body: some View {
         VStack{
             Spacer()
@@ -25,24 +29,11 @@ struct WelcomeView: View {
                     .symbolVariant(.fill)
                     .foregroundColor(.white)
                 .padding(.bottom, 4)
-                Text("or")
-                HStack(alignment: .center) {
-                    Image(systemName: "mappin.and.ellipse")
-                        .font(.system(size: 20))
-                        .foregroundColor(.white)
-                        .padding(.leading, 6)
-                    Text("Choose on Map")
-                        .foregroundColor(.white)
-                        .font(.system(size: 18))
-                        .padding(.trailing, 6)
-                }
-                .padding(9)
-                .background {
-                    RoundedRectangle(cornerRadius: 100)
-                        .foregroundColor(.blue)
-                }
+                
             }
             Spacer()
-        } .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color("background"))
     }
 }

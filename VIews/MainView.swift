@@ -9,7 +9,11 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @ObservedObject var googlePlaceManager: GooglePlaceManager
+    
     @State var sidebarShow = false
+    @State var citySearch = false
+    
     let lon: Double
     let lat: Double
 
@@ -26,7 +30,7 @@ struct MainView: View {
                         VStack {
                             // MARK: - Nav Bar
                             VStack{
-                                NavigationBar(sidebarShow: $sidebarShow)
+                                NavigationBar(sidebarShow: $sidebarShow, citySearch: $citySearch)
                                 Rectangle().frame(width: geometry.size.width, height: 2)
                                     .offset(y: -8)
                                     .foregroundColor(Color("borderBlue"))
@@ -36,7 +40,7 @@ struct MainView: View {
                         }
                         .frame(maxHeight: .infinity)
                         
-                        SideBarView(sidebarShow: $sidebarShow, width: geometry.size.width * 0.8)
+                        SideBarView(googlePlaceManager: googlePlaceManager,sidebarShow: $sidebarShow, citySearch: $citySearch, width: geometry.size.width * 0.8)
                             .offset(x: sidebarShow ? 0 : -geometry.size.width)
                     }
                     .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
@@ -49,10 +53,8 @@ struct MainView: View {
             }
         }
         .background(Color("background"))
-        .onReceive(weatherViewModel.$lang) { _ in
-            weatherViewModel.isDataFetched = false
+        .onAppear {
             weatherViewModel.getWeather(lon: lon, lat: lat)
         }
     }
 }
-

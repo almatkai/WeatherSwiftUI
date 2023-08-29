@@ -35,13 +35,13 @@ class GooglePlaceManager: ObservableObject {
                     }
                     
                     let places: [PlaceModel] = res.compactMap {
-                        PlaceModel(name: $0.attributedFullText.string, placeId: $0.placeID)
+                        PlaceModel(city: $0.attributedFullText.string, placeId: $0.placeID)
                     }
                     completion(.success(places))
                 }
     }
     
-    func fetchPlace(placeID: String) {
+    func fetchPlace(placeID: String, handler: @escaping(PlaceModel) -> Void) {
         let fields: GMSPlaceField = GMSPlaceField(arrayLiteral: .name, .placeID, .formattedAddress, .coordinate)
 
         GMSPlacesClient.shared().fetchPlace(fromPlaceID: placeID, placeFields: fields, sessionToken: nil) { place, error in
@@ -50,10 +50,12 @@ class GooglePlaceManager: ObservableObject {
                 return
             }
             if let place = place {
-                print("Name: \(place.name ?? "Unknown")")
-                print("Place ID: \(place.placeID ?? "Unknown")")
-                print("Formatted Address: \(place.formattedAddress ?? "Unknown")")
-                print("Coordinate: \(place.coordinate.latitude), \(place.coordinate.longitude)")
+                handler(PlaceModel(
+                    cityFulltext: place.formattedAddress ?? "Unknown",
+                    placeId: place.placeID ?? "Unknown",
+                    lat: place.coordinate.latitude,
+                    lon: place.coordinate.longitude
+                ))
             }
         }
     }

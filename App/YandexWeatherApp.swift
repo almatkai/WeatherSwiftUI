@@ -15,9 +15,13 @@ struct YandexWeatherApp: App {
     let screenHeight = UIScreen.main.bounds.height
     
     @UIApplicationDelegateAdaptor private var appDelegate: YandexWeatherAppDelegate
+    
+    @StateObject private var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(WeatherViewModel())
                 .environment(\.screenWidth, screenWidth)
                 .environment(\.screenHeight, screenHeight)
@@ -38,7 +42,7 @@ extension EnvironmentValues {
     }
     var screenHeight: CGFloat? {
         get { self[ScreenHeightKey.self] }
-        set {  self[ScreenHeightKey.self] = newValue }
+        set { self[ScreenHeightKey.self] = newValue }
     }
 }
 
@@ -47,8 +51,9 @@ class YandexWeatherAppDelegate: NSObject, UIApplicationDelegate, ObservableObjec
 
     }
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        GMSPlacesClient.provideAPIKey("AIzaSyDhaEAljHgUG411Y7fCoH2Gu2ac_lZrQZ4")
+        
+        // get api key from here: https://console.cloud.google.com/google/maps-apis/credentials
+        GMSPlacesClient.provideAPIKey("GOOGLE-PLACES-API-KEY")
         return true
     }
 }

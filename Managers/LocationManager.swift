@@ -7,6 +7,9 @@
 
 import CoreLocation
 
+// I should create separate LocationVM but LocationManager is itself
+// not a big thing so I think it is also not a bad option,
+// but you can create it as WeatherManager and WeatherVM
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     let manager = CLLocationManager ()
     
@@ -22,13 +25,13 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
-        case .authorizedWhenInUse:  // Location services are available.
+        case .authorizedWhenInUse:  
             authorizationStatus = .authorizedWhenInUse
             break
-        case .restricted, .denied:  // Location services currently unavailable.
+        case .restricted, .denied:
             authorizationStatus = .restricted
             break
-        case .notDetermined:        // Authorization not determined yet.
+        case .notDetermined:
             manager.requestWhenInUseAuthorization()
             break
         default:

@@ -26,34 +26,26 @@ enum Lang: String, CustomStringConvertible{
         }
 }
 
-struct WeatherManger{
+struct WeatherManger {
     let lang: Lang
+    
+    //get api key from here: https://developer.tech.yandex.ru/services
     private let headers: HTTPHeaders = [
-        "X-Yandex-API-Key": "68d5d688-4280-4c47-bd08-fe26f3665f3d",
+        "X-Yandex-API-Key": "YOUR-YANDEX-WEATHER-API-KEY",
     ]
     let lon: Double
     let lat: Double
 
     func getWeather(completion: @escaping (Weather) -> Void) {
         let url = "https://api.weather.yandex.ru/v2/forecast?lat=\(lat)&lon=\(lon)&lang=\(self.lang.rawValue)"
-        // URL EXAMPLES
-//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=51.509865&lon=-0.118092&lang=ru_Ru" //London
-//        let url = "https://api.(аштвукweather.yandex.ru/v2/forecast?lat=49.89220004696588&lon=73.19040375680234&lang=ru_Ru" //Karaganda
-//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=37.33233141&lon=-122.0312186&lang=ru_Ru" //Cupertino
-//        let url = "https://api.weather.yandex.ru/v2/forecast?lat=51.160522&lon=71.470360&lang=ru_RU" //Astana
         
         AF.request(url, headers: headers).responseJSON { response in
             switch response.result {
             case .success(let value):
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: value, options: [])
-                    
                     // MARK: - To Check Whether the data fetched
-//                    if let jsonString = String(data: jsonData, encoding: .utf8) {
-//                        print("DEBUG jsonData: \(jsonString)")
-//                    } else {
-//                        print("DEBUG jsonData could not be converted to a string.")
-//                    }
+
                     let decoder = JSONDecoder()
                     let weather = try decoder.decode(Weather.self, from: jsonData)
                     completion(weather)

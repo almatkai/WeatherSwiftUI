@@ -9,8 +9,9 @@ import Foundation
 
 struct PlaceModel: Identifiable {
     var id = UUID().uuidString
-    var name: String = ""
+    var city: String = ""
+    var cityFulltext: String = ""
     var placeId: String = ""
-    var lat = ""
-    var lon = ""
+    var lat = 0.0
+    var lon = 0.0
 }

@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct NavigationBar: View {
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
     
+    @EnvironmentObject var weatherVM: WeatherViewModel
     @Binding var sidebarShow: Bool
     @State var isSearching = false
     @State var cityName: String = ""
     @State var lengthOfSearchBar: CGFloat = 0
     @State var lengthOfCityName: CGFloat = 200
+    
+    @Binding var citySearch: Bool
 
     var body: some View {
         HStack{
@@ -27,8 +29,8 @@ struct NavigationBar: View {
                     .imageModifier(width: 30)
             }
             Spacer()
-            if let localityName = weatherViewModel.weather.geo_object?.locality?.name,
-                let countryName = weatherViewModel.weather.geo_object?.country?.name {
+            if let localityName = weatherVM.currentWeather.geo_object?.locality?.name,
+                let countryName = weatherVM.currentWeather.geo_object?.country?.name {
                 Text("\(localityName), \(countryName)")
                     .frame(width: lengthOfCityName, height: 30)
             } else {
@@ -43,22 +45,11 @@ struct NavigationBar: View {
                 Image(systemName: "magnifyingglass")
                     .imageModifier(width: 24)
                     .onTapGesture {
-                        if lengthOfSearchBar == 0 {
-                            withAnimation{
-                                lengthOfSearchBar = 200
-                                lengthOfCityName = 0
-                            }
-                        }else {
-                            withAnimation{
-                                lengthOfSearchBar = 0
-                                lengthOfCityName = 200
-                                keyBoardHide()
-                            }
+                        citySearch = true
+                        withAnimation{
+                            sidebarShow = true
                         }
                     }
-                TextField("Search the city", text: $cityName)
-                    .textFieldStyle(.plain)
-                    .autocorrectionDisabled(true)
             }.frame(width: lengthOfSearchBar, height: 30)
                 .padding(.horizontal)
             if lengthOfCityName == 0 {
@@ -67,6 +58,7 @@ struct NavigationBar: View {
         }
         .padding(.horizontal)
         .padding(.bottom, 10)
+        .padding(.top, 5)
         .background(Color("navBar"))
     }
 }
