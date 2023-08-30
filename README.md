@@ -30,7 +30,7 @@ Built with SwiftUI as its foundation, this app offers a modern and user-friendly
 + **Core Data**: Used to manage local storage of fetched weather data, allowing users to access previous forecasts even when offline.
 
 # Getting Started
-To run the Yandex Weather App locally, follow these steps:
+To run the Weather App locally, follow these steps:
 <ol>
     <li>Clone the repository to your local machine.</li>
     <li>Open the project in Xcode.</li>
