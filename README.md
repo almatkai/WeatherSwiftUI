@@ -2,7 +2,7 @@
 
 <p align="center">
     <img width="200" src="https://github.com/almatkai/WeatherSwiftUI/assets/92521753/27572903-6c94-4086-92af-bcda85fc6cd7">
-    <h6>App Icon made by Bing Create</h6>
+    <h6>App Icon made by <a href="https://www.bing.com/create">Bing Create</a></h6>
 
 </p>
 
